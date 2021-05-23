@@ -6,30 +6,22 @@ import axios from 'axios';
 // Importacion para conectar componente con reducer
 import { connect } from 'react-redux';
 
+import * as usuariosActions from '../../actions/usuariosActions';
+
 class Usuarios extends Component {
 
-    // COMO YA PUSIMOS EL ESTADO EN EL REDUCER, YA NO REQUERIMOS EL CONSTRUCTOR ------
-    // Creamos un estado con un constructor (ESTADO INICIALIZATION)
-    // constructor() {
-    //     // Usamos super para que se vaya a Component de quien heredamos
-    //     super();
-    //     // Ponemos un estado
-    //     this.state = {
-    //     usuarios:[],
-    //     }
-    // }
+    componentDidMount
+    componentDidMount() {
+        // Traemos la API usando axios con el metodo get
+        // const respuesta = await axios.get('https://jsonplaceholder.typicode.com/users');
 
-    // componentDidMount
-    // async componentDidMount() {
-    //     // Traemos la API usando axios con el metodo get
-    //     const respuesta = await axios.get('https://jsonplaceholder.typicode.com/users');
-
-    //     // Va a montar a los usuarios una vez inicialize la aplicacion
-    //     // setState envia el estado a this.state en el constructor
-    //     this.setState({
-    //     usuarios: respuesta.data
-    //     })
-    // }
+        // // Va a montar a los usuarios una vez inicialize la aplicacion
+        // // setState envia el estado a this.state en el constructor
+        // this.setState({
+        // usuarios: respuesta.data
+        // })
+        this.props.traerTodos();
+    }
 
     ponerFilas = () => (
         // Haremos que solo exista un tr y se vaya generando dinamicamente de acuerdo
@@ -73,4 +65,4 @@ const mapStateToProps = (reducers) => {
     return reducers.usuariosReducer;
 }
 
-export default connect(mapStateToProps, { /*Actions*/ })(Usuarios);
+export default connect(mapStateToProps, usuariosActions)(Usuarios);
