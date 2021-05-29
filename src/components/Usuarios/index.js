@@ -1,26 +1,38 @@
 // State full component --------------------
 import React, { Component } from 'react';
-import '../../index'
-// Importamos axios para poder usar direcciones externas
-import axios from 'axios';
 // Importacion para conectar componente con reducer
 import { connect } from 'react-redux';
+import Spinner from '../General/Spinner';
 
 import * as usuariosActions from '../../actions/usuariosActions';
 
+// Componente clase
 class Usuarios extends Component {
 
-    componentDidMount
     componentDidMount() {
-        // Traemos la API usando axios con el metodo get
-        // const respuesta = await axios.get('https://jsonplaceholder.typicode.com/users');
-
-        // // Va a montar a los usuarios una vez inicialize la aplicacion
-        // // setState envia el estado a this.state en el constructor
-        // this.setState({
-        // usuarios: respuesta.data
-        // })
+        // this.props.traerTodos viene de usuariosActions que esta declarado
+        // en la parte de abajo en el export y se encuentra en la carpeta actions
         this.props.traerTodos();
+    }
+
+    ponerContenido = () => {
+        if (this.props.cargando) {
+            return <Spinner />;
+        }
+        return (
+            <table className="tabla">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Enlace</th>
+                </tr>
+                </thead>
+                <tbody>
+                { this.ponerFilas() }
+                </tbody>
+            </table>
+        )
     }
 
     ponerFilas = () => (
@@ -38,22 +50,11 @@ class Usuarios extends Component {
     );
 
     render() {
+        console.log(this.props.cargando);
+        console.log(this.props.error);
         return (
         <React.Fragment>
-            <div>
-            <table className="tabla">
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Enlace</th>
-                </tr>
-                </thead>
-                <tbody>
-                { this.ponerFilas() }
-                </tbody>
-            </table>
-            </div>
+            { this.ponerContenido() }
         </React.Fragment>
         );
     }
