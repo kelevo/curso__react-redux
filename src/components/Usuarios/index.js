@@ -3,59 +3,40 @@ import React, { Component } from 'react';
 // Importacion para conectar componente con reducer
 import { connect } from 'react-redux';
 import Spinner from '../General/Spinner';
+import Fatal from '../General/Fatal';
+import Tabla from './Tabla';
+
 
 import * as usuariosActions from '../../actions/usuariosActions';
-
 // Componente clase
 class Usuarios extends Component {
 
     componentDidMount() {
         // this.props.traerTodos viene de usuariosActions que esta declarado
         // en la parte de abajo en el export y se encuentra en la carpeta actions
-        this.props.traerTodos();
+        if (!this.props.usuarios.length) {
+            this.props.traerTodos();
+        }
     }
 
     ponerContenido = () => {
         if (this.props.cargando) {
             return <Spinner />;
         }
-        return (
-            <table className="tabla">
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Enlace</th>
-                </tr>
-                </thead>
-                <tbody>
-                { this.ponerFilas() }
-                </tbody>
-            </table>
-        )
-    }
 
-    ponerFilas = () => (
-        // Haremos que solo exista un tr y se vaya generando dinamicamente de acuerdo
-        // a la cantidad de usuarios que existan
-        // Traemos el estado e iteramos con map()
-        this.props.usuarios.map((usuario) => (
-        // Por cada usuario regresa un tr
-        <tr key={ usuario.id }>
-            <td>{ usuario.name }</td>
-            <td>{ usuario.email }</td>
-            <td>{ usuario.website }</td>
-        </tr>
-        ))
-    );
+        if (this.props.error) {
+            return <Fatal mensaje={ this.props.error } />;
+        }
+
+        return <Tabla />;
+    };
 
     render() {
-        console.log(this.props.cargando);
-        console.log(this.props.error);
         return (
-        <React.Fragment>
-            { this.ponerContenido() }
-        </React.Fragment>
+            <React.Fragment>
+                <h1>Usuarios</h1>
+                { this.ponerContenido() }
+            </React.Fragment>
         );
     }
 }
